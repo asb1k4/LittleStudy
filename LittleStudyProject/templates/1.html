@@ -1,0 +1,465 @@
+<html xmlns="http://www.w3.org/1999/xhtml" class="gr__freeonlinetest_in">
+<style type="text/css" id="night-mode-pro-style"></style>
+<link type="text/css" rel="stylesheet" id="night-mode-pro-link">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <meta name="keywords" content="Freeonline test">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/new/style.css' %}">
+  <link rel="icon" href="http://www.freeonlinetest.in/images/favicon.png" type="image/gif">
+  <script async="" src="{% static 'js/new/analytics.js' %}"></script>
+  <script src="{% static 'js/new/osd.js' %}"></script>
+  <script src="{% static 'js/new/jquery-1.8.1.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/new/script1.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/new/nav-rs.css' %}">
+  <link rel="stylesheet" href="{% static 'css/new/style.css' %}">
+  <script type="text/javascript">
+    $(function () {
+      $(document).bind('contextmenu', function (e) {
+        e.preventDefault();
+      });
+    });
+  </script>
+  {% block body %}
+  <div id="wrp">
+    <div class="inr">
+      <script language="JavaScript" type="text/JavaScript"></script>
+      <script type="text/javascript">
+        var paperNo = "jh";
+        var qTimerNo = 1;
+        var questionTimer;
+        function loading_show() {
+          $('#loading').html("<img src='http://www.freeonlinetest.in/images/loading.gif'/>").fadeIn('fast');
+        }
+        function loading_hide() {
+          $('#loading').fadeOut('fast');
+        }
+        $('#container .pagination li.q_pagin').live({
+          click: function () {
+            var page = parseInt($(this).attr('qno'));
+            var qq = parseInt($('.question_dv:visible').attr('qno'));
+            sam(qq, page);
+          }
+        });
+      </script>
+      <script type="text/javascript">
+        $('[id^="next"]').live({
+          click: function () {
+            var qno = parseInt($(this).attr('qno'));
+            $('#question_inc').html(qno + 1);
+            sam(qno, qno + 1);
+          }
+        });
+        $('[id^="prev"]').live({
+          click: function () {
+            var qno = parseInt($(this).attr('qno'));
+            $('#question_inc').html(qno - 1);
+            $('#container .pagination li.q_pagin').eq(qno - 1).addClass('q_skipped');
+            sam(qno, qno - 1);
+          }
+        });
+        $('[id^="answec"]').live({
+          click: function () {
+            var qno = parseInt($(this).attr('qno'));
+            $('#question_inc').html(qno);
+            sam(qno, false);
+          }
+        });
+        questionTimer = setInterval(function () {
+          var tme = parseInt($('#time' + qTimerNo).val()) + 1;
+          $('#time' + qTimerNo).val(tme)
+        }, 998)
+        function sam(qno, qnext) {
+          var aid = 0;
+          if ($("input:radio[name=answec" + qno + "]:checked").length > 0)
+            aid = $("input:radio[name=answec" + qno + "]:checked").val();
+          var qid = $('#quesoid' + qno).val();
+          var caid = $('#cansid' + qno).val();
+          var tme = $('#time' + qno).val();
+          var llen = $('.question_dv').length;
+          if (aid != 0) {
+            $('#container .pagination li.q_pagin').eq(qno - 1).addClass('q_attempt');
+          }
+          if (qnext !== false) {
+            $('.total i').html(qnext);
+            qTimerNo = qnext;
+            if (qnext > qno) {
+              sam(qno, false);
+              $('#container .pagination li.q_pagin').eq(qno - 1).addClass('q_skipped');
+              $('#question_inc').html(qno + 1);
+              for (k = qno; k < qnext; k++) {
+                sam(k, false);
+                $('#container .pagination li.q_pagin').eq(k - 1).addClass('q_skipped');
+                $('#question_inc').html(k + 1);
+              }
+            }
+            if (qnext < qno) {
+              sam(qno, false);
+              $('#container .pagination li.q_pagin').eq(qno - 1).addClass('q_skipped');
+              $('#question_inc').html(qno - 1);
+            }
+            $('.question_dv').eq(qno - 1).fadeOut(100, function () {
+              $('#question_inc').html(qnext);
+              $('.question_dv').eq(qnext - 1).fadeIn()
+            });
+          }
+        }
+      </script>
+      <script type="text/javascript">
+        function yesnoCheck(par) {
+          if ($('#ifYes' + par).is(':visible')) {
+            $('#ifYes' + par).hide();
+          } else {
+            $('#ifYes' + par).show();
+          }
+        }
+        function yesnoCheckdes(par) {
+          if ($('#ifYesdes' + par).is(':visible')) {
+            $('#ifYesdes' + par).hide();
+          } else {
+            $('#ifYesdes' + par).show();
+          }
+        }
+      </script>
+      <form name="myForm" id="myForm" target="" action="#" method="GET">
+        <input type="hidden" value="" name="answersjson" id="answersjson">
+        <div id="wrp">
+          <div class="inr">
+            <div class="inr">
+              <!-- header -->
+              <div id="headar">
+                <div class="mn_hd">
+                  <div class="q-lft-u">
+                    <div>Вопрос: <span id="question_inc">1</span></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <table border="0" width="100%" style="margin-top:40px; border:solid 1px #919090;">
+              <tbody>
+                <tr>
+                  <td width="100%" align="center" valign="middle"><span>Осталось :</span> <span id="countdown"
+                      class="timer">0 минут : 0 секунд</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- content -->
+          <div class="inr">
+            <div class="inr-content">
+              <div class="admin">
+                <div id="question">
+                  <div class="q-lft">
+                    <div class="q-lft-n">
+                      <div id="container">
+                        <input type="hidden" id="paperNo" name="paperNo" value="1">
+                        <input type="hidden" id="subCatName" name="subCatName" value="1">
+                        <input type="hidden" id="catName" name="catName" value="1">
+                        <input type="hidden" id="qesId" name="catName" value="">
+                        <input type="hidden" id="selectedans" name="selectedans" value="">
+                        <input type="hidden" id="fullData" name="fullData" value="">
+                        <input type="hidden" name="question_name" value="">
+                        <div style="float:center; width:100%; margin-bottom:50px">
+                          <input type="hidden" name="total_question" value="20">
+                          <input type="hidden" name="question_ids[]" value="2735">
+                          <input type="hidden" name="curr_ans[2735]" value="2">
+                          <div class="question_dv" qid="{{ que.id }}" qno="{{ que.id }}">
+                            <div class="common_data">
+                              {% for que in ques %}
+                            </div>
+                            <div class="q_dv">
+                              <table>
+                                <tbody>
+                                  <tr>
+                                    <td align="left" valign="top">
+                                      <p id="numi"></p>
+                                    </td>
+                                    <td align="left" valign="top" class="questionData">
+                                      <p>{{ que.question }}</p>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="ans_dv">
+                              <input type="hidden" class="curr_ans" value="2">
+                              <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td width="4%" valign="top"><input type="radio" name="answec" qno="1" id="answec"
+                                        value="1"></td>
+                                    <td width="96%" valign="top">
+                                      A) {{ que.option1 }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <input type="hidden" class="curr_ans" value="2">
+                              <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td width="4%" valign="top"><input type="radio" name="answec" qno="1" id="answec"
+                                        value="2"></td>
+                                    <td width="96%" valign="top">
+                                      B) {{ que.option2 }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <input type="hidden" class="curr_ans" value="2">
+                              <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td width="4%" valign="top"><input type="radio" name="answec" qno="1" id="answec"
+                                        value="3"></td>
+                                    <td width="96%" valign="top">
+                                      C) {{ que.option3 }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                              <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td width="4%" valign="top"><input type="radio" name="answec" qno="1" id="answec"
+                                        value="4"><input type="hidden" class="curr_ans" value="2"></td>
+                                    <td width="96%" valign="top">
+                                      D) {{ que.option4 }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <input type="hidden" class="curr_ans" value="2">
+                              <table class="options" width="100%" border="0" cellspacing="0" cellpadding="0"></table>
+                              <div class="pagination" style="width:100%;">
+                                <ul>
+                                  <li qno="1" class="inactive">
+                                    <input type="button" qno="1" name="Prev" id="prev" value="Назад">
+                                  </li>
+                                  <li qno="1" class="active">
+                                    <input type="button" qno="1" name="Next" id="next" value="Следующий вопрос">
+                                  </li>
+                                  <li class="inactive">
+                                    <input type="button" id="endtest" class="endtest" name="endtest"
+                                      value="Завершить тестирование">
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="question_ids[]" value="1">
+                        <input type="hidden" id="quesoid" value="1">
+                        <input type="hidden" id="cansid" value="1">
+                        <input type="hidden" id="time" class="timeTaken" name="time" value="1">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </form>
+    <script type="text/javascript">
+      function getElementById(numi) {
+        var number = $('<h2>Вопрос ' + (number + 1) + ':</h2>');
+        number.append(number);
+
+        return number;
+      }
+    </script>
+    <script type="text/javascript">
+      var seconds = 1800;
+      var seconds = 600;
+      function secondPassed() {
+        seconds--;
+        //document.getElementById('r_sec').value=seconds;
+        //alert(seconds);
+        var minutes = parseInt(seconds / 60);
+        //seconds = parseInt(seconds);
+        var remainingSeconds = parseInt(seconds % 60);
+        //alert(remainingSeconds);
+        if (remainingSeconds < 10) {
+          remainingSeconds = "0" + parseInt(remainingSeconds);
+        }
+        //document.getElementById('r_sec1').value=seconds;
+        document.getElementById('countdown').innerHTML = minutes + " минут : " + remainingSeconds + " секунд";
+        if (parseInt(seconds) === 0) {
+          //alert(seconds);
+          alert("Время закончилось!");
+          clearInterval(countdownTimer);
+          document.getElementById('countdown').innerHTML = "Время закончилось!";
+          collectAnswers();
+          //document.forms["myForm"].submit();
+        }
+      }
+      var countdownTimer = window.setInterval(function () {
+        secondPassed();
+      }, 999);
+    </script>
+    <script>
+      $(".endtest").show();
+      $(".endtest").click(function () {
+        var qq = parseInt($('.question_dv:visible').attr('qno'));
+        var x = confirm("Are you sure want to submit the test?");
+        if (x == true) {
+          sam(qq, false);
+          collectAnswers();
+        }
+      });
+      function collectAnswers() {
+        var totalCount = 0;
+        var answeredCount = 0;
+        var unAnsweredCount = 0;
+        var totalMarks = 0;
+        var correctAnswerCount = 0;
+        var questions = [];
+        var result = "";
+        $(".question_dv").each(function () {
+          var questionObject = {};
+          var question = $(this).find(".questionData").html();
+          var correctAnswer = $(this).find(".curr_ans").val();
+          var yourAnswer = $(this).find('input[type=radio]:checked').val();
+          $(this).find('input[type=radio]:checked').parent().next().find("p span.answerData").addClass("yourAnswer");
+          var correctAnswerData = $(this).find("span.correctData").html();
+          var yourAnswerData = $(this).find(".yourAnswer").html();
+          var timeTaken = $(this).find(".timeTaken").val();
+          // framing rest of the value required.
+          totalCount++;
+          if (typeof yourAnswer === "undefined") {
+            unAnsweredCount++;
+            yourAnswerData = "";
+          }
+          if (yourAnswer == correctAnswer) {
+            correctAnswerCount++;
+            questionResult = 0;
+            totalMarks++;
+          } else {
+            if (yourAnswerData != "") {
+              totalMarks = totalMarks - 0.25;
+            }
+            questionResult = 1;
+          }
+          questionObject["question"] = escape(question);
+          questionObject["correctAnswer"] = escape(correctAnswer);
+          questionObject["yourAnswer"] = escape(yourAnswer);
+          questionObject["timeTaken"] = timeTaken;
+          questionObject["correctAnswerData"] = escape(correctAnswerData);
+          questionObject["yourAnswerData"] = escape(yourAnswerData);
+          questionObject["questionResult"] = escape(questionResult);
+          questions.push(questionObject);
+          var currectAns = $(this).find(".curr_ans").val();
+          var selectedAns = $(this).find('input[type=radio]:checked').val();
+          var questionId = $(this).attr("qid");
+          //result += "curct: " +  currectAns + " selected: " + selectedAns +" question id: "+ questionId + "; ";
+        });
+        answeredCount = totalCount - unAnsweredCount;
+        var finalObject = {};
+        finalObject["totalCount"] = totalCount;
+        finalObject["answeredCount"] = answeredCount;
+        finalObject["unAnsweredCount"] = unAnsweredCount;
+        finalObject["correctAnswerCount"] = correctAnswerCount;
+        finalObject["totalMarks"] = totalMarks;
+        finalObject["questions"] = questions;
+        console.log(JSON.stringify(finalObject));
+        $.cookie("basket-data", JSON.stringify(finalObject));
+        $("#fullData").val(JSON.stringify(finalObject));
+        //console.log(JSON.stringify(finalObject));
+        document.forms["myForm"].submit();
+      }
+    </script>
+    <script type="text/javascript">
+      var auto = "";
+      window.onload = function () {
+        auto = window.setTimeout(function () { autoRefresh(); }, 1000);
+      }
+      function submitform() {
+        alert('Тестирование завершено');
+        var qq = parseInt($('.question_dv:visible').attr('qno'));
+        sam(qq, false);
+        collectAnswers();
+        //document.forms["myForm"].submit();
+      }
+      function autoRefresh() {
+        auto = window.setTimeout(function () { submitform(); autoRefresh(); }, 1800000);
+        clearTimeout(auto);
+      }
+      function funct() {
+        var qq = parseInt($('.question_dv:visible').attr('qno'));
+        sam(qq, false);
+        collectAnswers();
+        //document.forms["myForm"].submit();
+      }
+    </script>
+    <script>
+      document.onkeydown = function (e) {
+        // keycode for F5 function
+        if (e.keyCode === 116) {
+          return false;
+        }
+        // keycode for backspace
+        if (e.keyCode === 8) {
+          // try to cancel the backspace
+          return false;
+        }
+        if (e.keyCode === 82) {
+          // removes the ctrl+r (page refresh)
+          return false;
+        }
+      };
+      jQuery.cookie = function (name, value, options) {
+        if (typeof value != 'undefined') { // name and value given, set cookie
+          options = options || {};
+          if (value === null) {
+            value = '';
+            options = $.extend({}, options); // clone object since it's unexpected behavior if the expired property were changed
+            options.expires = -1;
+          }
+          var expires = '';
+          if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+              date = new Date();
+              date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+              date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+          }
+          // NOTE Needed to parenthesize options.path and options.domain
+          // in the following expressions, otherwise they evaluate to undefined
+          // in the packed version for some reason...
+          var path = options.path ? '; path=' + (options.path) : '';
+          var domain = options.domain ? '; domain=' + (options.domain) : '';
+          var secure = options.secure ? '; secure' : '';
+          document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+        } else { // only name given, get cookie
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+      };
+    </script>
+    {% endblock %}
+
+</html>
+
